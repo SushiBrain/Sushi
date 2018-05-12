@@ -7,6 +7,8 @@ bot.on('ready', function () {
 
 bot.login(process.env.TOKEN)
 
+var prefix = "?"
+
 bot.on('message', message => {
   if (message.content === '+avatar') {
     message.reply(message.author.avatarURL);
@@ -85,5 +87,14 @@ client.on("guildCreate", guild => {
     await member.ban(reason)
       .catch(error => message.reply(`Pardon ${message.author} je ne peux pas ban a cause de : ${error}`));
     message.reply(`${member.user.tag} a été ban par : ${message.author.tag} parce que: ${reason}`);
+  }
+});
+
+client.on('message', message => {
+  if (message.author.bot) return;
+  if (!message.content.startsWith(prefix)) return;
+
+  if (message.content.startsWith(prefix + 'ping')) {
+      message.channel.sendMessage('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
   }
 });
