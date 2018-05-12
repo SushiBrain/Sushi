@@ -38,10 +38,4 @@ bot.on('message', msg => {
   }
 });
 
-bot.ban('some user ID')
-  .then(user => console.log(` ${user.username || user.id || user} a été ban de ${guild}`))
-  .catch(console.error);
 
-  bot.ban(user, { days: 7, reason: 'Il devais y aller' })
-  .then(console.log)
-  .catch(console.error);
