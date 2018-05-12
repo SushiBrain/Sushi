@@ -1,39 +1,95 @@
-const Discord = require('discord.js')
-const bot = new Discord.Client()
+const Discord = require("discord.js");
 
-bot.on('ready', function () {
-  console.log("Je suis connecté !")
-})
+const client = new Discord.Client();
 
-bot.login(process.env.TOKEN)
+const config = require("./config.json");
 
-bot.on('message', message => {
-  if (message.content === '+avatar') {
-    message.reply(message.author.avatarURL);
+client.on("ready", () => {
+  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+});
+
+client.on("guildCreate", guild => {
+  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+});
+
+client.on("guildDelete", guild => {
+  // this event triggers when the bot is removed from a guild.
+  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+});
+
+
+client.on("message", async message => {
+  
+  if(message.author.bot) return;
+  
+  if(message.content.indexOf(config.prefix) !== 0) return;
+  
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+  
+  
+  if(command === "ping") {
+    const m = await message.channel.send("Ping?");
+    m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
-})
+  
+  if(command === "say") {
+    const sayMessage = args.join(" ");
+    message.delete().catch(O_o=>{}); 
+    message.channel.send(sayMessage);
+  }
+  
+  if(command === "kick") {
+    if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+      return message.reply("Sorry, you don't have permissions to use this!");
+    
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    if(!member.kickable) 
+      return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
+    
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+    
+    await member.kick(reason)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
+    message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
 
-bot.on("guildMemberAdd", member => {
-    member.guild.channels.find("name","accueil").send(`Bienvenue, ${member}`)
-})
+  }
+  
+  if(command === "ban") {
+    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
+      return message.reply("Sorry, you don't have permissions to use this!");
+    
+    let member = message.mentions.members.first();
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    if(!member.bannable) 
+      return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
 
-bot.on("guildMemberRemove", member => {
-  member.guild.channels.find("name","accueil").send(`${member}, a décidé de fuir !`)
-})
-
-bot.on('guildMemberAdd', member => {
-    var role = member.guild.roles.find('name', 'Membre')
-    member.addRole(role)
-})
-
-bot.on('guildMemberAdd', member => {
-  member.createDM().then(channel => {
-    return channel.send('Bienvenue sur mon serveur ' + member.displayName)
-  }).catch(console.error)
-})
-
-bot.on('message', msg => {
-  if (msg.content === '+ping') {
-    msg.reply('Pong!');
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+    
+    await member.ban(reason)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+    message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
+  }
+  
+  if(command === "purge") {
+    
+    const deleteCount = parseInt(args[0], 10);
+    
+    if(!deleteCount || deleteCount < 2 || deleteCount > 100)
+      return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
+    
+    const fetched = await message.channel.fetchMessages({count: deleteCount});
+    message.channel.bulkDelete(fetched)
+      .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
 });
+
+bot.login(process.env.TOKEN)
