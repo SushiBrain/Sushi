@@ -31,3 +31,9 @@ bot.on('guildMemberAdd', member => {
     return channel.send('Bienvenue sur mon serveur ' + member.displayName)
   }).catch(console.error)
 })
+
+bot.on('message', msg => {
+  if (msg.content === '+ping') {
+    msg.reply('Pong!');
+  }
+});
