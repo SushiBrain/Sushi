@@ -28,6 +28,11 @@ bot.on("guildMemberRemove", member => {
 })
 
 bot.on('guildMemberAdd', member => {
+    var role = member.guild.roles.find('name', 'Membre')
+    member.addRole(role)
+})
+
+bot.on('guildMemberAdd', member => {
   member.createDM().then(channel => {
     return channel.send('Bienvenue sur mon serveur ' + member.displayName)
   }).catch(console.error)
