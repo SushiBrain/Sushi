@@ -8,12 +8,6 @@ bot.on('ready', function () {
 bot.login(process.env.TOKEN)
 
 bot.on('message', message => {
-  if (message.content === '+ping') {
-    message.reply('pong !')
-  }
-})
-
-bot.on('message', message => {
   if (message.content === '+avatar') {
     message.reply(message.author.avatarURL);
   }
