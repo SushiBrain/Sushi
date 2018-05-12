@@ -19,6 +19,14 @@ bot.on('message', message => {
   }
 })
 
+bot.on("guildMemberAdd", member => {
+    member.guild.channels.find("name","acceuil").send(`Bienvenue, ${member}`)
+})
+
+bot.on("guildMemberRemove", member => {
+  member.guild.channels.find("name","acceuil").send(`${member}, a décidé de fuir !`)
+})
+
 bot.on('guildMemberAdd', member => {
   member.createDM().then(channel => {
     return channel.send('Bienvenue sur mon serveur ' + member.displayName)
