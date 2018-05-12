@@ -38,7 +38,7 @@ bot.on('message', msg => {
   }
 });
 
-client.on('message', message => {
+bot.on('message', message => {
   if (!message.guild) return;
 
   if (message.content === '+join') {
