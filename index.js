@@ -38,7 +38,10 @@ bot.on('guildMemberAdd', member => {
   }).catch(console.error)
 })
 
-client.on("message", async message => {
+client.on("guildCreate", guild => {
+  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+});
   
   if(message.author.bot) return;
   
@@ -46,7 +49,7 @@ client.on("message", async message => {
   
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-  
+ 
   
   if(command === "+ping") {
     const m = await message.channel.send("Ping?");
