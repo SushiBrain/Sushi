@@ -7,11 +7,11 @@ bot.on('ready', function () {
 
 bot.login(process.env.TOKEN)
 
-client.on('message', message => {
-    if(message.content.startsWith("+ping")) {
-            message.channel.send(new Date().getTime() - message.createdTimestamp + " ms");        
-    }
-}
+bot.on('message', message => {
+  if (message.content === '+ping') {
+    message.reply(`Pong! \`${client.pings[0]}ms\``)
+  }
+})
 
 bot.on('message', message => {
   if (message.content === '+avatar') {
