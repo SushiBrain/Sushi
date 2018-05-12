@@ -37,9 +37,3 @@ bot.on('guildMemberAdd', member => {
     return channel.send('Bienvenue sur mon serveur ' + member.displayName)
   }).catch(console.error)
 })
-
-bot.on('guildMemberRemove', member => {
-  member.createDM().then(channel => {
-    return channel.send('Pourquoi, es-tu parti :sob: ' + member.displayName)
-  }).catch(console.error)
-})
