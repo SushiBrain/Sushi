@@ -20,11 +20,11 @@ bot.on('message', message => {
 })
 
 bot.on("guildMemberAdd", member => {
-    member.guild.channels.find("name","acceuil").send(`Bienvenue, ${member}`)
+    member.guild.channels.find("name","accueil").send(`Bienvenue, ${member}`)
 })
 
 bot.on("guildMemberRemove", member => {
-  member.guild.channels.find("name","acceuil").send(`${member}, a décidé de fuir !`)
+  member.guild.channels.find("name","accueil").send(`${member}, a décidé de fuir !`)
 })
 
 bot.on('guildMemberAdd', member => {
