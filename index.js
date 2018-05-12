@@ -37,3 +37,10 @@ bot.on('guildMemberAdd', member => {
     return channel.send('Bienvenue sur mon serveur ' + member.displayName)
   }).catch(console.error)
 })
+
+bot.on('message', message => {
+  if (message.content === '+help') {
+  member.createDM().then(channel => {
+    return channel.send('voici les commandes ' + member.displayName)
+  })}
+})
