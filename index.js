@@ -37,3 +37,7 @@ bot.on('guildMemberAdd', member => {
     return channel.send('Bienvenue sur mon serveur ' + member.displayName)
   }).catch(console.error)
 })
+
+if (message.conent.indexOf("+ban") === 0) {
+  var userToBan = message.content.slice(5);
+}
