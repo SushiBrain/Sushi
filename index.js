@@ -7,7 +7,11 @@ bot.on('ready', function () {
 
 bot.login(process.env.TOKEN)
 
-var prefix = "?"
+client.on('message', message => {
+    if(message.content.startsWith("+ping")) {
+            message.channel.send(new Date().getTime() - message.createdTimestamp + " ms");        
+    }
+}
 
 bot.on('message', message => {
   if (message.content === '+avatar') {
@@ -90,11 +94,3 @@ client.on("guildCreate", guild => {
   }
 });
 
-client.on('message', message => {
-  if (message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
-
-  if (message.content.startsWith(prefix + 'ping')) {
-      message.channel.sendMessage('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
-  }
-});
