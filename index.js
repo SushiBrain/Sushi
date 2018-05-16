@@ -37,19 +37,3 @@ bot.on('message', msg => {
     msg.reply('Pong!');
   }
 });
-
-bot.on('message', message => {
-  if (!message.guild) return;
-
-  if (message.content === '+join') {
-    if (message.member.voiceChannel) {
-      message.member.voiceChannel.join()
-        .then(connection => {
-          message.reply('J ai réussi à me connecter à la chaîne!');
-        })
-        .catch(console.log);
-    } else {
-      message.reply('Vous devez d abord rejoindre une chaîne vocale!');
-    }
-  }
-});
