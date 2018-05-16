@@ -28,7 +28,7 @@ bot.on('guildMemberAdd', member => {
 
 bot.on('guildMemberAdd', member => {
   member.createDM().then(channel => {
-    return channel.send('Bienvenue sur mon serveur, pour voir tous les channels va dans : rôles > rajouter la réaction déjà présente. Bon jeu à toi :' + member.displayName)
+    return channel.send('Bienvenue sur mon serveur' + member.displayName)
   }).catch(console.error)
 })
 
