@@ -1,14 +1,40 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const Discord = require('discord.js')
+const bot = new Discord.Client()
+var prefix = ("+")
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
+bot.on('ready', function () {
+  console.log("Je suis connecté !")
+})
 
-client.on('message', msg => {
+bot.login("process.env.TOKEN")
+
+bot.on('message', message => {
+  if (message.content === 'avatar') {
+    message.reply(message.author.avatarURL);
+  }
+})
+
+bot.on("guildMemberAdd", member => {
+    member.guild.channels.find("name","accueil").send(`Bienvenue, ${member}`)
+})
+
+bot.on("guildMemberRemove", member => {
+  member.guild.channels.find("name","accueil").send(`${member}, a décidé de fuir !`)
+})
+
+bot.on('guildMemberAdd', member => {
+    var role = member.guild.roles.find('name', 'Membre')
+    member.addRole(role)
+})
+
+bot.on('guildMemberAdd', member => {
+  member.createDM().then(channel => {
+    return channel.send('Bienvenue sur mon serveur' + member.displayName)
+  }).catch(console.error)
+})
+
+bot.on('message', msg => {
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   }
 });
-
-client.login('process.env.TOKEN');
