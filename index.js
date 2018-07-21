@@ -1,15 +1,14 @@
-const Discord = require('discord.js')
-const bot = new Discord.Client()
-var prefix = ("+")
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
-bot.on('ready', function () {
-  bot.user.SetActivity("+help")
-  console.log("Je suis connecté !")
-})
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
 
-bot.on('message', msg => {
-  if (msgmsg.content === prefix + 'ping') {
-    msg.reply('pong !')
+client.on('message', msg => {
+  if (msg.content === 'ping') {
+    msg.reply('Pong!');
   }
-})
-bot.login('process.env.TOKEN')
+});
+
+client.login('process.env.TOKEN');
